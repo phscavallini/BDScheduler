@@ -6,14 +6,29 @@ A fairly simpe Roblox DataBase Scheduler to avoid Data Store Drops.
 ## Getting Started
 To build the place from scratch, use:
 
-```bash
-rojo build -o "DBScheduler.rbxlx"
+## Simple usage
+```lua
+local DBScheduler = require(script.DBScheduler)
+
+local DSS: DataStoreService = game:GetService("DataStoreService")
+local Workspace = game:GetService("Workspace")
+
+local NewSchedule = DBScheduler.Init()
+local GameDB: DataStore = DSS:GetDataStore("GameDB")
+
+local PromptHandler = Workspace:WaitForChild("PromptHandler")
+local ProximityPrompt = PromptHandler:FindFirstChild("ProximityPrompt")
+
+ProximityPrompt.Triggered:Connect(function(User: Player)
+    NewSchedule:InsertTask(function(...)
+        local UpdatedData = GameDB:UpdateAsync(`USER_{User.UserId}`, function(Coins: number)
+            if Coins == nil then
+                Coins = 0
+            end
+            Coins += 10
+            return Coins
+        end)
+        print(UpdatedData)
+    end)()
+end)
 ```
-
-Next, open `DBScheduler.rbxlx` in Roblox Studio and start the Rojo server:
-
-```bash
-rojo serve
-```
-
-For more help, check out [the Rojo documentation](https://rojo.space/docs).
