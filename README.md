@@ -6,7 +6,7 @@ A fairly simpe Roblox DataBase Scheduler to avoid Data Store Drops.
 ## Getting Started
 To build the place from scratch, use:
 
-## Simple usage
+## Basic usage
 ```lua
 local DBScheduler = require(script.DBScheduler)
 
